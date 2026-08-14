@@ -1,0 +1,6 @@
+-dontwarn tech.geelab.core.**
+-keep class tech.geelab.core.**{*;}
+-keep interface tech.geelab.core.**{*;}
+-dontwarn tech.geelab.geegateway.**
+-keep class tech.geelab.geegateway.**{*;}
+-keep interface tech.geelab.geegateway.**{*;}

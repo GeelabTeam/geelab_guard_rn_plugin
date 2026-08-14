@@ -1,0 +1,112 @@
+{
+  "pluginInfo": {
+    "moduleName": "GeelabGuard",
+    "packageName": "geelabguard-rn-plugin",
+    "androidPackage": "tech.geelab.reactnative.geelabguard",
+    "androidMinSdk": 21,
+    "iosMinVersion": "12.4"
+  },
+  "methods": [
+    {
+      "name": "initialize",
+      "description": "Register the SDK with an AppID and optional server URL.",
+      "parameters": [
+        {
+          "name": "appId",
+          "type": "string",
+          "description": "Geelab AppID.",
+          "required": true
+        },
+        {
+          "name": "serverUrl",
+          "type": "string",
+          "description": "Optional regional submission URL.",
+          "required": false
+        }
+      ],
+      "returnType": "void",
+      "invocation": "promise",
+      "platform": "both",
+      "errorCodes": [
+        {
+          "code": "INVALID_ARGUMENT",
+          "description": "AppID or explicit server URL is empty."
+        }
+      ]
+    },
+    {
+      "name": "fetchReceipt",
+      "description": "Create a local receipt on a background queue.",
+      "parameters": [
+        {
+          "name": "signData",
+          "type": "string",
+          "description": "Business data bound to the token.",
+          "required": true
+        }
+      ],
+      "returnType": "object",
+      "returnDescription": "Normalized Geelab receipt.",
+      "invocation": "promise",
+      "platform": "both",
+      "errorCodes": [
+        {
+          "code": "NOT_INITIALIZED",
+          "description": "The SDK returned no receipt before registration."
+        },
+        {
+          "code": "UNKNOWN_NATIVE_ERROR",
+          "description": "The SDK raised an undocumented exception."
+        }
+      ]
+    },
+    {
+      "name": "submitReceipt",
+      "description": "Submit a receipt and return the service response.",
+      "parameters": [
+        {
+          "name": "signData",
+          "type": "string",
+          "description": "Business data bound to the token.",
+          "required": true
+        }
+      ],
+      "returnType": "object",
+      "returnDescription": "Normalized submitted receipt.",
+      "invocation": "promise",
+      "platform": "both",
+      "errorCodes": [
+        {
+          "code": "NOT_INITIALIZED",
+          "description": "AppID was not registered."
+        },
+        {
+          "code": "NETWORK_ERROR",
+          "description": "Submission failed at the network layer."
+        },
+        {
+          "code": "INVALID_RESPONSE",
+          "description": "Service response format was invalid."
+        },
+        {
+          "code": "SERVICE_FAILURE",
+          "description": "The service reported a failure."
+        },
+        {
+          "code": "UNKNOWN_NATIVE_ERROR",
+          "description": "The SDK returned an undocumented status."
+        }
+      ]
+    },
+    {
+      "name": "getVersion",
+      "description": "Return the bundled native SDK version.",
+      "parameters": [],
+      "returnType": "string",
+      "returnDescription": "Bundled native SDK version string.",
+      "invocation": "promise",
+      "platform": "both",
+      "errorCodes": []
+    }
+  ]
+}

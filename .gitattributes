@@ -1,0 +1,8 @@
+*.pbxproj -text
+# specific for windows script files
+*.bat text eol=crlf
+.yarn/releases/*.cjs -whitespace
+
+# Preserve vendor-signed native SDK bundles byte-for-byte.
+android/libs/*.aar binary
+ios/Frameworks/**/*.xcframework/** binary

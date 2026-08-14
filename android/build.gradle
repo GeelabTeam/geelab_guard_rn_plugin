@@ -1,0 +1,78 @@
+buildscript {
+  ext.GeelabGuard = [
+    kotlinVersion: "2.0.21",
+    minSdkVersion: 21,
+    compileSdkVersion: 36
+  ]
+
+  ext.getExtOrDefault = { prop ->
+    if (rootProject.ext.has(prop)) {
+      return rootProject.ext.get(prop)
+    }
+
+    return GeelabGuard[prop]
+  }
+
+  repositories {
+    google()
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "com.android.tools.build:gradle:8.7.2"
+    // noinspection DifferentKotlinGradleVersion
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
+  }
+}
+
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+apply plugin: "com.facebook.react"
+
+def geelabGuardAarName = "geelabguard_android_v2.7.4_20260428"
+def geelabGuardAarFileName = "${geelabGuardAarName}.aar"
+def geelabGuardLibsDir = file("libs")
+def geelabGuardAarFile = file("libs/${geelabGuardAarFileName}")
+
+// The proprietary GeelabGuard SDK is supplied separately and must never be
+// committed to this repository or published in the npm package.
+if (!geelabGuardAarFile.isFile()) {
+  throw new GradleException(
+    "[geelabguard-rn-plugin] Missing GeelabGuard Android SDK. " +
+    "Obtain ${geelabGuardAarFileName} through an authorized GeelabGuard channel " +
+    "and copy it to the package-relative path android/libs/${geelabGuardAarFileName}. " +
+    "See the installation section in README.md."
+  )
+}
+
+rootProject.allprojects {
+  repositories {
+    flatDir {
+      dirs geelabGuardLibsDir
+    }
+  }
+}
+
+android {
+  namespace "tech.geelab.reactnative.geelabguard"
+
+  compileSdkVersion getExtOrDefault("compileSdkVersion")
+
+  defaultConfig {
+    minSdkVersion getExtOrDefault("minSdkVersion")
+    consumerProguardFiles "consumer-rules.pro"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+}
+
+dependencies {
+  implementation "com.facebook.react:react-android"
+  implementation(name: geelabGuardAarName, ext: "aar")
+  testImplementation "junit:junit:4.13.2"
+}
